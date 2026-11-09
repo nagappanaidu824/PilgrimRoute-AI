@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
@@ -29,28 +30,30 @@
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         crossorigin=""
-    >
-
-    </script>
+    ></script>
 
     <style>
+
         html {
             scroll-behavior: smooth;
         }
 
         body {
             min-height: 100vh;
+
             background:
                 radial-gradient(
                     circle at 10% 0%,
                     rgba(124, 58, 237, 0.10),
                     transparent 30%
                 ),
+
                 radial-gradient(
                     circle at 90% 10%,
                     rgba(245, 158, 11, 0.10),
                     transparent 30%
                 ),
+
                 #fafaf9;
         }
 
@@ -121,17 +124,22 @@
         }
 
         @keyframes pulse {
+
             0% {
-                box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.35);
+                box-shadow:
+                    0 0 0 0 rgba(124, 58, 237, 0.35);
             }
 
             70% {
-                box-shadow: 0 0 0 12px rgba(124, 58, 237, 0);
+                box-shadow:
+                    0 0 0 12px rgba(124, 58, 237, 0);
             }
 
             100% {
-                box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+                box-shadow:
+                    0 0 0 0 rgba(124, 58, 237, 0);
             }
+
         }
 
         .hide-scrollbar::-webkit-scrollbar {
@@ -141,17 +149,21 @@
         .hide-scrollbar {
             scrollbar-width: none;
         }
+
     </style>
+
 </head>
 
 
 <body class="text-slate-800">
+
 
 <!-- ========================================================= -->
 <!-- HEADER -->
 <!-- ========================================================= -->
 
 <header class="border-b border-stone-200 bg-white/90 backdrop-blur">
+
     <div class="mx-auto max-w-7xl px-5 py-5 lg:px-8">
 
         <div class="flex items-center justify-between">
@@ -165,13 +177,17 @@
                 </div>
 
                 <div>
-                    <h1 class="text-xl font-black tracking-tight text-slate-950">
+
+                    <h1
+                        class="text-xl font-black tracking-tight text-slate-950"
+                    >
                         PilgrimRoute AI
                     </h1>
 
                     <p class="text-xs font-medium text-slate-500">
                         Intelligent sacred-circuit trip engine
                     </p>
+
                 </div>
 
             </div>
@@ -186,6 +202,7 @@
         </div>
 
     </div>
+
 </header>
 
 
@@ -205,6 +222,7 @@
                 Sacred Circuits
             </span>
 
+
             <h2
                 class="mt-4 text-4xl font-black tracking-tight text-slate-950 md:text-6xl"
             >
@@ -214,12 +232,13 @@
                 </span>
             </h2>
 
+
             <p
                 class="mt-5 max-w-3xl text-base leading-7 text-slate-600 md:text-lg"
             >
                 Select a sacred circuit, choose your starting city,
-                and let PilgrimRoute AI calculate an optimized sequence
-                designed to reduce unnecessary geographical backtracking.
+                select a Jyotirlinga, and let PilgrimRoute AI calculate
+                the distance and optimized sequence.
             </p>
 
         </div>
@@ -235,9 +254,13 @@
     class="mb-8 rounded-3xl border border-stone-200 bg-white p-5 shadow-sm md:p-7"
 >
 
-    <div class="grid gap-5 lg:grid-cols-[1.1fr_1fr_auto] lg:items-end">
+    <div class="grid gap-5 lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end">
 
-        <!-- Circuit -->
+
+        <!-- ================================================= -->
+        <!-- SACRED CIRCUIT -->
+        <!-- ================================================= -->
+
         <div>
 
             <label
@@ -247,14 +270,18 @@
                 Sacred Circuit
             </label>
 
+
             <select
                 id="circuit"
                 class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3.5 text-sm font-semibold outline-none transition focus:border-violet-500 focus:ring-4 focus:ring-violet-100"
             >
+
                 <option value="jyotirlingas">
                     12 Jyotirlingas of Lord Shiva
                 </option>
+
             </select>
+
 
             <p
                 id="circuitDescription"
@@ -267,7 +294,11 @@
         </div>
 
 
-        <!-- Starting location -->
+
+        <!-- ================================================= -->
+        <!-- STARTING LOCATION -->
+        <!-- ================================================= -->
+
         <div>
 
             <label
@@ -276,6 +307,7 @@
             >
                 Starting Location
             </label>
+
 
             <input
                 id="startingLocation"
@@ -286,6 +318,7 @@
                 class="w-full rounded-xl border border-stone-300 px-4 py-3.5 text-sm font-semibold outline-none transition focus:border-violet-500 focus:ring-4 focus:ring-violet-100"
             >
 
+
             <p class="mt-2 text-xs text-slate-500">
                 Try Mumbai, Delhi, Bengaluru, Hyderabad, Pune,
                 Chennai, Kolkata, Ahmedabad or Jaipur.
@@ -294,7 +327,106 @@
         </div>
 
 
-        <!-- Generate -->
+
+        <!-- ================================================= -->
+        <!-- SELECT JYOTIRLINGA -->
+        <!-- ================================================= -->
+
+        <div>
+
+            <label
+                for="selectedTemple"
+                class="mb-2 block text-sm font-black text-slate-700"
+            >
+                Select Jyotirlinga
+            </label>
+
+
+            <select
+                id="selectedTemple"
+                class="w-full rounded-xl border border-stone-300 bg-white px-4 py-3.5 text-sm font-semibold outline-none transition focus:border-violet-500 focus:ring-4 focus:ring-violet-100"
+            >
+
+                <option value="all">
+                    All 12 Jyotirlingas
+                </option>
+
+
+                <option value="somnath">
+                    Somnath Jyotirlinga
+                </option>
+
+
+                <option value="nageshwar">
+                    Nageshwar Jyotirlinga
+                </option>
+
+
+                <option value="trimbakeshwar">
+                    Trimbakeshwar Jyotirlinga
+                </option>
+
+
+                <option value="bhimashankar">
+                    Bhimashankar Jyotirlinga
+                </option>
+
+
+                <option value="grishneshwar">
+                    Grishneshwar Jyotirlinga
+                </option>
+
+
+                <option value="omkareshwar">
+                    Omkareshwar Jyotirlinga
+                </option>
+
+
+                <option value="mahakaleshwar">
+                    Mahakaleshwar Jyotirlinga
+                </option>
+
+
+                <option value="kedarnath">
+                    Kedarnath Jyotirlinga
+                </option>
+
+
+                <option value="kashi_vishwanath">
+                    Kashi Vishwanath Jyotirlinga
+                </option>
+
+
+                <option value="baidyanath">
+                    Baidyanath Jyotirlinga
+                </option>
+
+
+                <option value="mallikarjuna">
+                    Mallikarjuna Jyotirlinga
+                </option>
+
+
+                <option value="ramanathaswamy">
+                    Ramanathaswamy Jyotirlinga
+                </option>
+
+            </select>
+
+
+            <p class="mt-2 text-xs text-slate-500">
+                Select one temple to calculate the distance
+                from your starting location.
+            </p>
+
+        </div>
+
+
+
+        <!-- ================================================= -->
+        <!-- GENERATE BUTTON -->
+        <!-- ================================================= -->
+
         <button
             id="planButton"
             type="button"
@@ -305,12 +437,14 @@
                 Generate Route
             </span>
 
+
             <svg
                 id="buttonSpinner"
                 class="hidden h-4 w-4 animate-spin"
                 viewBox="0 0 24 24"
                 fill="none"
             >
+
                 <circle
                     cx="12"
                     cy="12"
@@ -320,11 +454,13 @@
                     class="opacity-25"
                 />
 
+
                 <path
                     d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
                     fill="currentColor"
                     class="opacity-75"
                 />
+
             </svg>
 
         </button>
@@ -332,13 +468,18 @@
     </div>
 
 
-    <!-- Error -->
+
+    <!-- ================================================= -->
+    <!-- ERROR -->
+    <!-- ================================================= -->
+
     <div
         id="errorBox"
         class="mt-5 hidden rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700"
     ></div>
 
 </section>
+
 
 
 <!-- ========================================================= -->
@@ -352,11 +493,19 @@
 
     <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 
-        <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
 
-            <p class="text-xs font-black uppercase tracking-wider text-slate-400">
+        <!-- Starting Point -->
+
+        <div
+            class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
+        >
+
+            <p
+                class="text-xs font-black uppercase tracking-wider text-slate-400"
+            >
                 Starting Point
             </p>
+
 
             <p
                 id="summaryStart"
@@ -368,11 +517,19 @@
         </div>
 
 
-        <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
 
-            <p class="text-xs font-black uppercase tracking-wider text-slate-400">
+        <!-- Sacred Stops -->
+
+        <div
+            class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
+        >
+
+            <p
+                class="text-xs font-black uppercase tracking-wider text-slate-400"
+            >
                 Sacred Stops
             </p>
+
 
             <p
                 id="summaryStops"
@@ -384,11 +541,19 @@
         </div>
 
 
-        <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
 
-            <p class="text-xs font-black uppercase tracking-wider text-slate-400">
+        <!-- Distance -->
+
+        <div
+            class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
+        >
+
+            <p
+                class="text-xs font-black uppercase tracking-wider text-slate-400"
+            >
                 Estimated Distance
             </p>
+
 
             <p
                 id="summaryDistance"
@@ -400,13 +565,22 @@
         </div>
 
 
-        <div class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm">
 
-            <p class="text-xs font-black uppercase tracking-wider text-slate-400">
+        <!-- Strategy -->
+
+        <div
+            class="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm"
+        >
+
+            <p
+                class="text-xs font-black uppercase tracking-wider text-slate-400"
+            >
                 Route Strategy
             </p>
 
+
             <p
+                id="routeStrategy"
                 class="mt-2 text-lg font-black text-emerald-600"
             >
                 Cluster Optimized
@@ -417,6 +591,7 @@
     </div>
 
 </section>
+
 
 
 <!-- ========================================================= -->
@@ -430,6 +605,7 @@
 
     <div class="grid lg:grid-cols-[1.15fr_0.85fr]">
 
+
         <!-- ================================================= -->
         <!-- MAP -->
         <!-- ================================================= -->
@@ -440,6 +616,7 @@
 
 
             <!-- Map overlay -->
+
             <div
                 class="absolute left-4 top-4 z-[500] rounded-2xl border border-stone-200 bg-white/95 px-4 py-4 text-xs shadow-lg backdrop-blur"
             >
@@ -448,19 +625,32 @@
                     Route Legend
                 </p>
 
+
                 <div class="flex items-center gap-2">
-                    <span class="h-3 w-3 rounded-full bg-emerald-600"></span>
+
+                    <span
+                        class="h-3 w-3 rounded-full bg-emerald-600"
+                    ></span>
+
                     Starting location
+
                 </div>
 
+
                 <div class="mt-2 flex items-center gap-2">
-                    <span class="h-3 w-3 rounded-full bg-violet-700"></span>
+
+                    <span
+                        class="h-3 w-3 rounded-full bg-violet-700"
+                    ></span>
+
                     Jyotirlinga
+
                 </div>
 
             </div>
 
         </div>
+
 
 
         <!-- ================================================= -->
@@ -473,16 +663,25 @@
                 class="border-b border-stone-200 bg-white px-5 py-5"
             >
 
-                <p class="text-xs font-black uppercase tracking-widest text-violet-700">
+                <p
+                    class="text-xs font-black uppercase tracking-widest text-violet-700"
+                >
                     Optimized Itinerary
                 </p>
 
-                <h3 class="mt-1 text-xl font-black text-slate-950">
+
+                <h3
+                    class="mt-1 text-xl font-black text-slate-950"
+                >
                     Your sacred route
                 </h3>
 
-                <p class="mt-1 text-xs text-slate-500">
-                    Follow the sequence below to minimize geographical backtracking.
+
+                <p
+                    class="mt-1 text-xs text-slate-500"
+                >
+                    Follow the sequence below to minimize geographical
+                    backtracking.
                 </p>
 
             </div>
@@ -500,6 +699,7 @@
 </section>
 
 
+
 <!-- ========================================================= -->
 <!-- INFO -->
 <!-- ========================================================= -->
@@ -508,17 +708,26 @@
     class="mt-8 grid gap-4 md:grid-cols-3"
 >
 
-    <div class="rounded-2xl border border-stone-200 bg-white p-5">
+
+    <!-- Intelligent Ordering -->
+
+    <div
+        class="rounded-2xl border border-stone-200 bg-white p-5"
+    >
 
         <div class="text-2xl">
             🧠
         </div>
 
+
         <h3 class="mt-3 font-black text-slate-900">
             Intelligent Ordering
         </h3>
 
-        <p class="mt-2 text-sm leading-6 text-slate-500">
+
+        <p
+            class="mt-2 text-sm leading-6 text-slate-500"
+        >
             Destinations are grouped geographically before calculating
             the travel sequence.
         </p>
@@ -526,17 +735,26 @@
     </div>
 
 
-    <div class="rounded-2xl border border-stone-200 bg-white p-5">
+
+    <!-- Interactive Map -->
+
+    <div
+        class="rounded-2xl border border-stone-200 bg-white p-5"
+    >
 
         <div class="text-2xl">
             🗺️
         </div>
 
+
         <h3 class="mt-3 font-black text-slate-900">
             Interactive Map
         </h3>
 
-        <p class="mt-2 text-sm leading-6 text-slate-500">
+
+        <p
+            class="mt-2 text-sm leading-6 text-slate-500"
+        >
             Explore all pilgrimage stops and the generated route using
             an interactive Leaflet map.
         </p>
@@ -544,17 +762,26 @@
     </div>
 
 
-    <div class="rounded-2xl border border-stone-200 bg-white p-5">
+
+    <!-- Transit Planning -->
+
+    <div
+        class="rounded-2xl border border-stone-200 bg-white p-5"
+    >
 
         <div class="text-2xl">
             🚆
         </div>
 
+
         <h3 class="mt-3 font-black text-slate-900">
             Transit Planning
         </h3>
 
-        <p class="mt-2 text-sm leading-6 text-slate-500">
+
+        <p
+            class="mt-2 text-sm leading-6 text-slate-500"
+        >
             Each itinerary leg provides a generic transit-search option
             for continuing your planning.
         </p>
@@ -564,7 +791,9 @@
 </section>
 
 
+
 </main>
+
 
 
 <!-- ========================================================= -->
@@ -581,10 +810,12 @@
             PilgrimRoute AI
         </p>
 
+
         <p class="mt-1">
             Geographic distance estimates are intended for trip planning.
             Actual road distances and travel times may vary.
         </p>
+
 
         <p class="mt-2">
             Maps © OpenStreetMap contributors • Leaflet
@@ -595,8 +826,14 @@
 </footer>
 
 
-<!-- Application JavaScript -->
+
+<!-- ========================================================= -->
+<!-- APPLICATION JAVASCRIPT -->
+<!-- ========================================================= -->
+
 <script src="assets/js/app.js"></script>
 
+
 </body>
+
 </html>
