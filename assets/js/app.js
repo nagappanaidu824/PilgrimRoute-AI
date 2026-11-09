@@ -154,8 +154,11 @@ const CIRCUITS = {
                 longitude: 79.3129,
                 cluster: "Southern Cluster"
             }
+
         ]
+
     }
+
 };
 
 
@@ -230,6 +233,7 @@ const STARTING_LOCATIONS = {
         latitude: 26.9124,
         longitude: 75.7873
     }
+
 };
 
 
@@ -242,6 +246,15 @@ const circuitElement =
 
 const startingLocationElement =
     document.getElementById("startingLocation");
+
+/*
+ * NEW:
+ * Gets the selected Jyotirlinga from the dropdown.
+ *
+ * This element is added in the updated index.html.
+ */
+const selectedTempleElement =
+    document.getElementById("selectedTemple");
 
 const planButton =
     document.getElementById("planButton");
@@ -344,6 +357,7 @@ function resolveStartingLocation(value) {
     if (STARTING_LOCATIONS[normalized]) {
 
         return STARTING_LOCATIONS[normalized];
+
     }
 
 
@@ -364,6 +378,7 @@ function resolveStartingLocation(value) {
     if (STARTING_LOCATIONS[city]) {
 
         return STARTING_LOCATIONS[city];
+
     }
 
 
@@ -385,9 +400,11 @@ function groupByCluster(locations) {
         if (!clusters[location.cluster]) {
 
             clusters[location.cluster] = [];
+
         }
 
         clusters[location.cluster].push(location);
+
     });
 
 
@@ -407,13 +424,20 @@ function clusterCentroid(locations) {
         latitude += location.latitude;
 
         longitude += location.longitude;
+
     });
 
 
     return {
-        latitude: latitude / locations.length,
-        longitude: longitude / locations.length
+
+        latitude:
+            latitude / locations.length,
+
+        longitude:
+            longitude / locations.length
+
     };
+
 }
 
 
@@ -458,7 +482,9 @@ function nearestLocation(
             bestDistance = distance;
 
             best = candidate;
+
         }
+
     });
 
 
@@ -491,6 +517,7 @@ function buildClusterRoute(
     /*
      * Select the closest cluster.
      */
+
     while (remainingClusters.length > 0) {
 
         remainingClusters.sort(
@@ -509,6 +536,7 @@ function buildClusterRoute(
                     );
 
                 return distanceA - distanceB;
+
             }
         );
 
@@ -523,6 +551,7 @@ function buildClusterRoute(
          * Once inside a cluster,
          * use nearest-neighbor ordering.
          */
+
         let remainingLocations =
             [...clusterLocations];
 
@@ -548,13 +577,16 @@ function buildClusterRoute(
                     location =>
                         location.id !== next.id
                 );
+
         }
+
     }
 
 
     /*
      * Improve route using 2-opt.
      */
+
     return improveRouteWithTwoOpt(
         start,
         route
@@ -585,6 +617,7 @@ function calculateRouteDistance(
             );
 
         current = location;
+
     });
 
 
@@ -644,6 +677,7 @@ function improveRouteWithTwoOpt(
                     ...best.slice(
                         j + 1
                     )
+
                 ];
 
 
@@ -668,9 +702,13 @@ function improveRouteWithTwoOpt(
 
                     improved =
                         true;
+
                 }
+
             }
+
         }
+
     }
 
 
@@ -725,6 +763,7 @@ function createItinerary(
                     buildTransitUrl(
                         destination
                     )
+
             };
 
 
@@ -733,8 +772,10 @@ function createItinerary(
 
 
             return item;
+
         }
     );
+
 }
 
 
@@ -757,6 +798,7 @@ function buildTransitUrl(
      *
      * No API key required.
      */
+
     return `https://www.google.com/travel/search?q=${query}`;
 }
 
@@ -770,6 +812,7 @@ function initializeMap() {
     if (map !== null) {
 
         return;
+
     }
 
 
@@ -802,6 +845,7 @@ function initializeMap() {
         [20.5937, 78.9629],
         5
     );
+
 }
 
 
@@ -831,7 +875,9 @@ function destinationIcon(
 
         popupAnchor:
             [0, -16]
+
     });
+
 }
 
 
@@ -855,7 +901,9 @@ function startIcon() {
 
         popupAnchor:
             [0, -19]
+
     });
+
 }
 
 
@@ -873,6 +921,7 @@ function escapeHtml(
         .replaceAll(">", "&gt;")
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
+
 }
 
 
@@ -898,13 +947,16 @@ function drawMap(
         start,
 
         ...itinerary
+
     ];
 
 
     const coordinates =
         points.map(point => [
+
             point.latitude,
             point.longitude
+
         ]);
 
 
@@ -914,6 +966,7 @@ function drawMap(
      * This is intentionally not presented as a
      * turn-by-turn road route.
      */
+
     const line =
         L.polyline(
             coordinates,
@@ -931,6 +984,7 @@ function drawMap(
 
 
     // Starting point
+
     const startMarker =
         L.marker(
             [
@@ -946,6 +1000,7 @@ function drawMap(
 
     startMarker.bindPopup(`
         <div>
+
             <div
                 style="
                     color:#059669;
@@ -966,6 +1021,7 @@ function drawMap(
             >
                 ${escapeHtml(start.name)}
             </div>
+
         </div>
     `);
 
@@ -976,6 +1032,7 @@ function drawMap(
 
 
     // Destination markers
+
     itinerary.forEach(item => {
 
         const marker =
@@ -1007,6 +1064,7 @@ function drawMap(
                     Step ${item.step}
                 </div>
 
+
                 <div
                     style="
                         margin-top:4px;
@@ -1016,6 +1074,7 @@ function drawMap(
                 >
                     ${escapeHtml(item.name)}
                 </div>
+
 
                 <div
                     style="
@@ -1028,6 +1087,19 @@ function drawMap(
                     ${escapeHtml(item.state)}
                 </div>
 
+
+                <div
+                    style="
+                        margin-top:8px;
+                        color:#6d28d9;
+                        font-size:12px;
+                        font-weight:800;
+                    "
+                >
+                    Distance:
+                    ${formatDistance(item.legDistanceKm)}
+                </div>
+
             </div>
         `);
 
@@ -1035,8 +1107,13 @@ function drawMap(
         marker.addTo(
             markerLayer
         );
+
     });
 
+
+    /*
+     * Fit the map around the complete route.
+     */
 
     map.fitBounds(
         line.getBounds(),
@@ -1051,6 +1128,7 @@ function drawMap(
         () => map.invalidateSize(),
         200
     );
+
 }
 
 
@@ -1067,12 +1145,14 @@ function formatDistance(
         return `${(
             distanceKm / 1000
         ).toFixed(1)}k km`;
+
     }
 
 
     return `${Math.round(
         distanceKm
     )} km`;
+
 }
 
 
@@ -1120,6 +1200,7 @@ function renderItinerary(
                             ${item.step}
                         </div>
 
+
                         ${
                             !isLast
                                 ? `
@@ -1153,6 +1234,7 @@ function renderItinerary(
                                         )}
                                     </p>
 
+
                                     <h4
                                         class="mt-1 text-sm font-black text-slate-900"
                                     >
@@ -1160,6 +1242,7 @@ function renderItinerary(
                                             item.name
                                         )}
                                     </h4>
+
 
                                     <p
                                         class="mt-1 text-xs text-slate-500"
@@ -1198,6 +1281,7 @@ function renderItinerary(
                                         From previous stop
                                     </p>
 
+
                                     <p
                                         class="mt-1 text-xs font-bold text-slate-600"
                                     >
@@ -1225,14 +1309,17 @@ function renderItinerary(
                     </div>
 
                 </div>
+
             `;
 
 
             itineraryElement.appendChild(
                 card
             );
+
         }
     );
+
 }
 
 
@@ -1253,6 +1340,26 @@ function generateRoute() {
 
     const circuitId =
         circuitElement.value;
+
+
+    /*
+     * NEW:
+     * Read selected Jyotirlinga.
+     *
+     * "all" means calculate the complete
+     * 12 Jyotirlinga route.
+     *
+     * Otherwise calculate only:
+     *
+     * Starting Location
+     *        ↓
+     * Selected Jyotirlinga
+     */
+
+    const selectedTemple =
+        selectedTempleElement
+            ? selectedTempleElement.value
+            : "all";
 
 
     if (!startingLocation) {
@@ -1308,17 +1415,86 @@ function generateRoute() {
      * Small delay gives the UI time to show
      * the loading state before the algorithm runs.
      */
+
     setTimeout(
         () => {
 
             try {
 
-                const route =
-                    buildClusterRoute(
-                        start,
-                        circuit.locations
-                    );
+                let route;
 
+
+                // ==========================================================
+                // ALL 12 JYOTIRLINGAS
+                // ==========================================================
+
+                if (
+                    selectedTemple === "all"
+                ) {
+
+                    /*
+                     * Existing behavior:
+                     * calculate the complete optimized
+                     * 12 Jyotirlinga route.
+                     */
+
+                    route =
+                        buildClusterRoute(
+                            start,
+                            circuit.locations
+                        );
+
+                }
+
+
+                // ==========================================================
+                // SINGLE JYOTIRLINGA
+                // ==========================================================
+
+                else {
+
+                    /*
+                     * Find the selected Jyotirlinga
+                     * from the existing pilgrimage data.
+                     */
+
+                    const selectedLocation =
+                        circuit.locations.find(
+                            location =>
+                                location.id ===
+                                selectedTemple
+                        );
+
+
+                    if (!selectedLocation) {
+
+                        throw new Error(
+                            "Selected Jyotirlinga was not found."
+                        );
+
+                    }
+
+
+                    /*
+                     * Only create one destination.
+                     *
+                     * Route becomes:
+                     *
+                     * Starting Location
+                     *        ↓
+                     * Selected Jyotirlinga
+                     */
+
+                    route = [
+                        selectedLocation
+                    ];
+
+                }
+
+
+                // ==========================================================
+                // CREATE ITINERARY
+                // ==========================================================
 
                 const itinerary =
                     createItinerary(
@@ -1327,12 +1503,20 @@ function generateRoute() {
                     );
 
 
+                // ==========================================================
+                // CALCULATE TOTAL DISTANCE
+                // ==========================================================
+
                 const totalDistance =
                     calculateRouteDistance(
                         start,
                         route
                     );
 
+
+                // ==========================================================
+                // RENDER SUMMARY
+                // ==========================================================
 
                 renderSummary(
                     start,
@@ -1341,16 +1525,28 @@ function generateRoute() {
                 );
 
 
+                // ==========================================================
+                // RENDER ITINERARY
+                // ==========================================================
+
                 renderItinerary(
                     itinerary
                 );
 
+
+                // ==========================================================
+                // DRAW MAP
+                // ==========================================================
 
                 drawMap(
                     start,
                     itinerary
                 );
 
+
+                // ==========================================================
+                // SHOW RESULTS
+                // ==========================================================
 
                 resultsElement
                     .classList
@@ -1365,6 +1561,7 @@ function generateRoute() {
                 /*
                  * Scroll to result on mobile.
                  */
+
                 if (
                     window.innerWidth < 1024
                 ) {
@@ -1376,6 +1573,7 @@ function generateRoute() {
                                 .scrollIntoView({
                                     behavior:
                                         "smooth",
+
                                     block:
                                         "start"
                                 });
@@ -1383,28 +1581,36 @@ function generateRoute() {
                         },
                         100
                     );
+
                 }
 
-            } catch (error) {
+            }
+
+            catch (error) {
 
                 console.error(
                     error
                 );
 
+
                 showError(
                     "Unable to generate the route. Please try again."
                 );
 
-            } finally {
+            }
+
+            finally {
 
                 setLoading(
                     false
                 );
+
             }
 
         },
         100
     );
+
 }
 
 
@@ -1427,7 +1633,9 @@ function renderSummary(
     document.getElementById(
         "summaryStops"
     ).textContent =
-        `${itinerary.length} Jyotirlingas`;
+        itinerary.length === 1
+            ? "1 Jyotirlinga"
+            : `${itinerary.length} Jyotirlingas`;
 
 
     document.getElementById(
@@ -1436,6 +1644,40 @@ function renderSummary(
         `${Math.round(
             totalDistance
         ).toLocaleString()} km`;
+
+
+    /*
+     * Update route strategy based on
+     * whether user selected one temple
+     * or the complete circuit.
+     */
+
+    const strategyElement =
+        document.getElementById(
+            "routeStrategy"
+        );
+
+
+    if (strategyElement) {
+
+        if (
+            itinerary.length === 1
+        ) {
+
+            strategyElement.textContent =
+                "Direct Distance";
+
+        }
+
+        else {
+
+            strategyElement.textContent =
+                "Cluster Optimized";
+
+        }
+
+    }
+
 }
 
 
@@ -1456,19 +1698,25 @@ function setLoading(
         buttonText.textContent =
             "Planning Route...";
 
+
         buttonSpinner
             .classList
             .remove("hidden");
 
-    } else {
+    }
+
+    else {
 
         buttonText.textContent =
             "Generate Route";
 
+
         buttonSpinner
             .classList
             .add("hidden");
+
     }
+
 }
 
 
@@ -1483,8 +1731,10 @@ function showError(
     errorBox.textContent =
         message;
 
+
     errorBox.classList
         .remove("hidden");
+
 }
 
 
@@ -1493,8 +1743,10 @@ function clearError() {
     errorBox.textContent =
         "";
 
+
     errorBox.classList
         .add("hidden");
+
 }
 
 
@@ -1517,9 +1769,40 @@ startingLocationElement.addEventListener(
         ) {
 
             generateRoute();
+
         }
+
     }
 );
+
+
+/*
+ * NEW:
+ *
+ * When the user presses Enter while
+ * selecting/using the Jyotirlinga dropdown,
+ * generate the route.
+ */
+
+if (selectedTempleElement) {
+
+    selectedTempleElement.addEventListener(
+        "change",
+        () => {
+
+            /*
+             * We don't automatically generate the route here.
+             *
+             * The user can select the temple and then
+             * click Generate Route.
+             */
+
+            clearError();
+
+        }
+    );
+
+}
 
 
 // ==========================================================================
@@ -1534,6 +1817,8 @@ document.addEventListener(
          * Initialize Leaflet only after
          * DOM is ready.
          */
+
         initializeMap();
+
     }
 );
